@@ -3,4 +3,31 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd"
     logicalFilePath="./src/main/resources/liquibase/updates/roster.xml">
 
+    <changeSet id="20210919-0708" author="rowanpi">
+        <createTable tableName="Roster">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="created" defaultValueComputed="CURRENT_TIMESTAMP" type="TIMESTAMP"/>
+            <column name="modified" defaultValueComputed="CURRENT_TIMESTAMP" type="TIMESTAMP"/>
+            <column name="deleted" type="TINYINT(1)" defaultValue="0">
+                <constraints nullable="0" />
+            </column>
+            <column name="serviceDate" type="DATE">
+                <constraints nullable="false" />
+            </column>
+            <column name="serviceType" type="varchar(20)">
+                <constraints nullable="false" />
+            </column>
+            <column name="role" type="BIGINT(20)">
+                <constraints nullable="false" foreignKeyName="fk_RoleRoster"
+                             references="Role(id)"  deleteCascade="true"/>
+            </column>
+            <column name="person" type="BIGINT(20)">
+                <constraints foreignKeyName="fk_PersonRoster"
+                             references="Person(id)"  deleteCascade="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>
