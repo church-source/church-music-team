@@ -46,4 +46,10 @@ public class PeopleFactory {
         return personFullViewModel;
     }
 
+    public PersonInRosterViewModel createPersonInRosterViewModelFromEntity(Person person) {
+        PersonInRosterViewModel personInRosterViewModel = new PersonInRosterViewModel();
+        BeanUtils.copyProperties(person, personInRosterViewModel, "deleted, created, modified");
+        return personInRosterViewModel;
+    }
+
 }

@@ -1,0 +1,101 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd"
+    logicalFilePath="./src/main/resources/liquibase/updates/services.xml">
+
+    <changeSet id="20210906-2230" author="rowanpi">
+        <createTable tableName="Person">
+          <column name="id" type="BIGINT(20)" autoIncrement="true">
+            <constraints primaryKey="true" />
+          </column>
+          <column name="created" defaultValueComputed="CURRENT_TIMESTAMP" type="TIMESTAMP"/>
+          <column name="modified" defaultValueComputed="CURRENT_TIMESTAMP" type="TIMESTAMP"/>
+          <column name="deleted" type="TINYINT(1)" defaultValue="0">
+                <constraints nullable="0" />
+          </column>
+          <column name="name" type="varchar(50)">
+            <constraints nullable="false" unique="true"/>
+          </column>
+          <column name="resigned" type="TINYINT(1)" defaultValue="0">
+            <constraints nullable="0" />
+          </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="20210906-2235" author="rowanpi">
+        <sql dbms="mysql">
+            ALTER TABLE Person CHANGE modified modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+        </sql>
+    </changeSet>
+
+    <changeSet id="20210906-2341" author="rowanpi">
+        <createTable tableName="Role">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="created" defaultValueComputed="CURRENT_TIMESTAMP" type="TIMESTAMP"/>
+            <column name="modified" defaultValueComputed="CURRENT_TIMESTAMP" type="TIMESTAMP"/>
+            <column name="deleted" type="TINYINT(1)" defaultValue="0">
+                <constraints nullable="0" />
+            </column>
+            <column name="rolename" type="varchar(50)">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="label" type="varchar(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20210919-0723" author="rowanpi">
+        <insert tableName="Role">
+            <column name="rolename" value="singer"/>
+            <column name="label" value="Singer"/>
+        </insert>
+        <insert tableName="Role">
+            <column name="rolename" value="acousticGuitar"/>
+            <column name="label" value="Acoustic Guitar"/>
+        </insert>
+        <insert tableName="Role">
+            <column name="rolename" value="bassGuitar"/>
+            <column name="label" value="Bass Guitar"/>
+        </insert>
+        <insert tableName="Role">
+            <column name="rolename" value="piano"/>
+            <column name="label" value="Piano"/>
+        </insert>
+        <insert tableName="Role">
+            <column name="rolename" value="violin"/>
+            <column name="label" value="Violin"/>
+        </insert>
+        <insert tableName="Role">
+            <column name="rolename" value="drums"/>
+            <column name="label" value="Drums"/>
+        </insert>
+        <insert tableName="Role">
+            <column name="rolename" value="lute"/>
+            <column name="label" value="Lute"/>
+        </insert>
+        <insert tableName="Role">
+            <column name="rolename" value="cello"/>
+            <column name="label" value="Cello"/>
+        </insert>
+        <insert tableName="Role">
+            <column name="rolename" value="soundDesk"/>
+            <column name="label" value="Sound Desk"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="20210906-2347" author="rowanpi">
+        <createTable tableName="person_role">
+            <column name="Person" type="BIGINT(20)">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_PersonForRole"
+                             references="Person(id)"  deleteCascade="true"/>
+            </column>
+            <column name="Role" type="BIGINT(20)">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_RoleForPerson"
+                             references="Role(id)"  deleteCascade="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
