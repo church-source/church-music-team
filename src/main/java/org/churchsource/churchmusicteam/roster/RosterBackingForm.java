@@ -16,15 +16,12 @@ public class RosterBackingForm implements Serializable {
 
   private static final long serialVersionUID = -3479479691039681608L;
 
-  private Service service;
-
   private Role role;
 
   private Person person;
 
   @Builder(builderMethodName = "aRosterBackingForm")
-  public RosterBackingForm(Service service, Role role, Person person) {
-    this.service = service;
+  public RosterBackingForm(Role role, Person person) {
     this.role = role;
     this.person = person;
   }

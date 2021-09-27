@@ -18,7 +18,7 @@ public class ServiceFactory {
         List<RosterBackingForm> rosterBackingForms = pbForm.getRoster();
         List<Roster> roster = new ArrayList<Roster>();
         for(RosterBackingForm rbf : rosterBackingForms) {
-            Roster r = rosterFactory.createRosterEntityFromBackingForm(rbf);
+            Roster r = rosterFactory.createFilledOutRosterEntityFromBackingForm(rbf);
             r.setService(service);
             roster.add(r);
         }

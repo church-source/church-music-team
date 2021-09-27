@@ -17,4 +17,11 @@ public class ServicesRepository extends AbstractRepository<Service> {
         .setParameter("id", id)
         .getSingleResult();
   }
+
+  public Service updateService(Service churchService) {
+    Service existingChurchService = findServiceById(churchService.getId());
+    Service updatedChurchService = new Service();
+    existingChurchService.mergeEntities(churchService, updatedChurchService);
+    return update(updatedChurchService);
+  }
 }
