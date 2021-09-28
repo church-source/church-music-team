@@ -11,5 +11,5 @@ public class RoleNamedQueryConstants {
   public static final String NAME_GET_ALL_ROLES = "Role.GetAllRoles";
   public static final String QUERY_GET_ALL_ROLES = "SELECT r FROM Role r "
           + "WHERE :includeDeleted = TRUE OR r.deleted = false "
-          + "ORDER BY name ASC";
+          + "ORDER BY rolename ASC";
 }

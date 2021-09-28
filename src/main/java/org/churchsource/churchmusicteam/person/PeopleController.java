@@ -1,6 +1,7 @@
 package org.churchsource.churchmusicteam.person;
 
 import lombok.extern.slf4j.Slf4j;
+import org.churchsource.churchmusicteam.viewmodel.BaseViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,17 +37,42 @@ public class PeopleController {
     }
   }
 
+  @GetMapping(path= "/find", params = "name")
+  @PreAuthorize("hasAuthority('ViewMusicTeamPeople')")
+  public PersonFullViewModel getPersonByName(@RequestParam String name) {
+    Person foundPerson = peopleRepository.findPersonByName(name);
+    if(foundPerson != null) {
+      return peopleFactory.createPersonFullViewModelFromEntity(foundPerson);
+    } else {
+      return null;
+    }
+  }
+
   @GetMapping
   @PreAuthorize("hasAuthority('ViewMusicTeamPeople')")
-  public List<PersonFullViewModel> getAllPeople() {
+  public List<? extends BaseViewModel<Long>> getAllPeople(@RequestParam(required = false) String roleName) {
+    List<Person> people = null;
+    if(roleName == null) {
+      people = peopleRepository.getAllPeople();
+      return convertListOfPeopleToListOfPeopleViewModels(people);
+    }
+    else {
+      people = peopleRepository.getAllPeopleWithGivenRoleName(roleName);
+      return convertListOfPeopleToListOfPersonInRosterViewModel(people);
+    }
 
-    List<Person> people = peopleRepository.getAllPeople();
-    return convertListOfPeopleToListOfPeopleViewModels(people);
   }
 
   private List<PersonFullViewModel> convertListOfPeopleToListOfPeopleViewModels(List<Person> people) {
     List<PersonFullViewModel> peopleViewModels = people.stream()
             .map(person -> peopleFactory.createPersonFullViewModelFromEntity(person))
+            .collect(Collectors.toList());
+    return peopleViewModels;
+  }
+
+  private List<PersonInRosterViewModel> convertListOfPeopleToListOfPersonInRosterViewModel(List<Person> people) {
+    List<PersonInRosterViewModel> peopleViewModels = people.stream()
+            .map(person -> peopleFactory.createPersonInRosterViewModelFromEntity(person))
             .collect(Collectors.toList());
     return peopleViewModels;
   }

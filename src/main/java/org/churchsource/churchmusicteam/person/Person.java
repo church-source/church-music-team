@@ -17,7 +17,7 @@ import java.util.Set;
     @NamedQuery(name = PeopleNamedQueryConstants.NAME_FIND_PERSON_BY_ID,
         query = PeopleNamedQueryConstants.QUERY_FIND_PERSON_BY_ID),
     @NamedQuery(name = PeopleNamedQueryConstants.NAME_FIND_PERSON_BY_NAME,
-        query = PeopleNamedQueryConstants.QUERY_FIND_PERSON_BY_NAME),
+        query = PeopleNamedQueryConstants.QUERY_FIND_PERSON_BY_NAME)
 })
 
 @Getter
