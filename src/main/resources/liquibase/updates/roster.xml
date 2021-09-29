@@ -21,6 +21,13 @@
             </column>
         </createTable>
     </changeSet>
+    <changeSet id="20210929-0708" author="rowanpi">
+        <addUniqueConstraint
+                columnNames="serviceDate, serviceType"
+                constraintName="uq_mt_serviceDate_type"
+                tableName="Service"
+        />
+    </changeSet>
     <changeSet id="20210924-0032" author="rowanpi">
         <createTable tableName="Roster">
             <column name="service" type="BIGINT(20)">

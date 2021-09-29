@@ -18,6 +18,10 @@ import java.util.List;
 @NamedQueries({
     @NamedQuery(name = ServiceNamedQueryConstants.NAME_FIND_SERVICE_BY_ID,
         query = ServiceNamedQueryConstants.QUERY_FIND_SERVICE_BY_ID),
+    @NamedQuery(name = ServiceNamedQueryConstants.NAME_FIND_SERVICE_BY_DATE_AND_TYPE,
+        query = ServiceNamedQueryConstants.QUERY_FIND_SERVICE_BY_DATE_AND_TYPE),
+    @NamedQuery(name = ServiceNamedQueryConstants.NAME_GET_SERVICES_BETWEEN_DATES,
+        query = ServiceNamedQueryConstants.QUERY_GET_SERVICES_BETWEEN_DATES),
 })
 
 @Getter

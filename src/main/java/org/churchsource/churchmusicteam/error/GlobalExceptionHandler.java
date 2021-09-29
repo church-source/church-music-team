@@ -1,12 +1,13 @@
 package org.churchsource.churchmusicteam.error;
 
 import static org.churchsource.churchmusicteam.error.ExceptionResponse.anExceptionResponse;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.HttpStatus.*;
 
 import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
+import javax.validation.ConstraintViolationException;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,13 +25,17 @@ import lombok.extern.slf4j.Slf4j;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-  @ExceptionHandler(Exception.class)
-  public ResponseEntity<ExceptionResponse> handleUnhandledException(Exception exception) {
+  @ExceptionHandler({ConstraintViolationException.class,
+          org.hibernate.exception.ConstraintViolationException.class,
+          DataIntegrityViolationException.class,
+          NonUniqueResultException.class})
+  public ResponseEntity<ExceptionResponse> handleConstraintViolationException(Exception exception) {
     log.error(exception.getMessage(), exception);
+    log.info("Got here Rowan 2");
     return ResponseEntity
-        .status(INTERNAL_SERVER_ERROR)
-        .contentType(MediaType.APPLICATION_JSON)
-        .body(anExceptionResponse(INTERNAL_SERVER_ERROR, exception.getMessage()));
+            .status(CONFLICT)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(anExceptionResponse(CONFLICT, exception.getMessage()));
   }
 
   @ExceptionHandler(AccessDeniedException.class)
@@ -67,5 +72,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     return super.handleExceptionInternal(ex, body, headers, status, request);
+  }
+
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<ExceptionResponse> handleUnhandledException(Exception exception) {
+    log.error(exception.getMessage(), exception);
+    log.info("Got here Rowan 1");
+    return ResponseEntity
+            .status(INTERNAL_SERVER_ERROR)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(anExceptionResponse(INTERNAL_SERVER_ERROR, exception.getMessage()));
   }
 }
